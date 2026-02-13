@@ -55,6 +55,12 @@ export default function Home() {
       <div className="relative z-10">
         {renderContent()}
       </div>
+      <footer className="absolute bottom-4 left-0 right-0 z-20 text-center text-sm text-white/50">
+        <p>Developed by Hundaol Fekadu.</p>
+        <a href="https://t.me/HundaolFekadu" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+          t.me/HundaolFekadu
+        </a>
+      </footer>
     </main>
   );
 }
