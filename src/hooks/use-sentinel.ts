@@ -18,6 +18,9 @@ export function useSentinel() {
     const alarmRef = useRef<Tone.Loop<any> | null>(null);
     const synthRef = useRef<Tone.Synth<Tone.SynthOptions> | null>(null);
     const speechIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    
+    // For testing, the interval is set to 5 seconds.
+    const PUSHUP_INTERVAL_MS = 5 * 1000;
 
     useEffect(() => {
         setIsClient(true);
@@ -30,40 +33,27 @@ export function useSentinel() {
             synthRef.current?.triggerAttackRelease("C4", "8n", time);
         }, "4n");
 
+        // Initialize last pushup time to start the local timer.
+        setLastPushupTime(Timestamp.now());
+
         return () => {
             alarmRef.current?.dispose();
             synthRef.current?.dispose();
         }
     }, []);
 
+    // This useEffect replaces the Firestore-based trigger with a local timer for testing.
     useEffect(() => {
-        if (!permissionsGranted || !isClient) return;
+        if (!permissionsGranted || !isClient || !lastPushupTime) return;
 
-        const docRef = doc(db, 'status', 'sentinel');
-        const unsubscribe = onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                setEnforcementActive(data.enforcement_active);
-                setLastPushupTime(data.last_pushup_time);
-            } else {
-                console.error("Sentinel document does not exist!");
-                toast({
-                    variant: "destructive",
-                    title: "Connection Error",
-                    description: "Could not find sentinel status document in Firestore.",
-                });
+        const timerId = setInterval(() => {
+            if (Date.now() - lastPushupTime.toDate().getTime() > PUSHUP_INTERVAL_MS) {
+                setEnforcementActive(true);
             }
-        }, (error) => {
-            console.error("Firestore snapshot error:", error);
-            toast({
-                variant: "destructive",
-                title: "Firestore Error",
-                description: "Lost connection to Firestore. Trying to reconnect...",
-            });
-        });
+        }, 1000);
 
-        return () => unsubscribe();
-    }, [permissionsGranted, isClient, toast]);
+        return () => clearInterval(timerId);
+    }, [permissionsGranted, isClient, lastPushupTime]);
 
     useEffect(() => {
         if (!permissionsGranted || !isClient) return;
@@ -123,22 +113,10 @@ export function useSentinel() {
 
     const handleDidItClick = async () => {
         setIsUpdating(true);
-        try {
-            const docRef = doc(db, 'status', 'sentinel');
-            await updateDoc(docRef, {
-                enforcement_active: false,
-                last_pushup_time: serverTimestamp(),
-            });
-        } catch (error) {
-            console.error("Error updating document: ", error);
-            toast({
-                variant: "destructive",
-                title: "Update Failed",
-                description: "Could not update status in Firestore. Please try again.",
-            });
-        } finally {
-            setIsUpdating(false);
-        }
+        // For testing, update local state instead of Firestore.
+        setLastPushupTime(Timestamp.now());
+        setEnforcementActive(false);
+        setIsUpdating(false);
     };
 
     return {
