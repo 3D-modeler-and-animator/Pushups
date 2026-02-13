@@ -19,8 +19,7 @@ export function useSentinel() {
     const synthRef = useRef<Tone.Synth<Tone.SynthOptions> | null>(null);
     const speechIntervalRef = useRef<NodeJS.Timeout | null>(null);
     
-    // For testing, the interval is set to 5 seconds.
-    const PUSHUP_INTERVAL_MS = 5 * 1000;
+    const PUSHUP_INTERVAL_MS = 60 * 60 * 1000;
 
     useEffect(() => {
         setIsClient(true);
@@ -42,7 +41,6 @@ export function useSentinel() {
         }
     }, []);
 
-    // This useEffect replaces the Firestore-based trigger with a local timer for testing.
     useEffect(() => {
         if (!permissionsGranted || !isClient || !lastPushupTime) return;
 
@@ -64,7 +62,7 @@ export function useSentinel() {
 
             const speak = () => {
                 if(window.speechSynthesis.speaking) return;
-                const utterance = new SpeechSynthesisUtterance("Stop working. Do ten push ups now.");
+                const utterance = new SpeechSynthesisUtterance("Stop working. Do twenty push ups now.");
                 utterance.rate = 1;
                 utterance.pitch = 0.8;
                 window.speechSynthesis.speak(utterance);
