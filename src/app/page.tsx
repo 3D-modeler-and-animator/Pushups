@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useSentinel } from "@/hooks/use-sentinel";
 import { PermissionsView } from "@/components/sentinel/permissions-view";
 import { EnforcementView } from "@/components/sentinel/enforcement-view";
 import { IdleView } from "@/components/sentinel/idle-view";
 import { Loader2 } from "lucide-react";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function Home() {
   const {
@@ -16,6 +18,8 @@ export default function Home() {
     handlePermissionsClick,
     handleDidItClick,
   } = useSentinel();
+
+  const backgroundImage = PlaceHolderImages.find(img => img.id === 'gym-background');
 
   const renderContent = () => {
     if (!isClient) {
@@ -36,8 +40,21 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4 text-center font-body">
-      {renderContent()}
+    <main className="relative flex min-h-screen flex-col items-center justify-center p-4 text-center font-body">
+      {backgroundImage && (
+        <Image
+          src={backgroundImage.imageUrl}
+          alt={backgroundImage.description}
+          fill
+          className="object-cover"
+          data-ai-hint={backgroundImage.imageHint}
+          priority
+        />
+      )}
+      <div className="absolute inset-0 bg-black/70" />
+      <div className="relative z-10">
+        {renderContent()}
+      </div>
     </main>
   );
 }
