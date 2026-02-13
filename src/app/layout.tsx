@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'PushUp Sentinel',
-  description: 'Stop working. Do ten push-ups now.',
+  title: 'Push Up Sentinel',
+  description: 'Stop working. Do ten push ups now.',
 };
 
 export default function RootLayout({

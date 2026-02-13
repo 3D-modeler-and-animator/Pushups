@@ -11,7 +11,7 @@ export function EnforcementView({ onConfirm, isUpdating }: EnforcementViewProps)
       <h1 className="animate-pulse font-headline text-5xl font-black uppercase text-primary md:text-7xl">
         Stop working.
         <br />
-        Do ten push-ups now.
+        Do ten push ups now.
       </h1>
       <Button
         onClick={onConfirm}

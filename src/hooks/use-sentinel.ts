@@ -33,7 +33,7 @@ export function useSentinel() {
             synthRef.current?.triggerAttackRelease("C4", "8n", time);
         }, "4n");
 
-        // Initialize last pushup time to start the local timer.
+        // Initialize last push up time to start the local timer.
         setLastPushupTime(Timestamp.now());
 
         return () => {
@@ -64,7 +64,7 @@ export function useSentinel() {
 
             const speak = () => {
                 if(window.speechSynthesis.speaking) return;
-                const utterance = new SpeechSynthesisUtterance("Stop working. Do ten push-ups now.");
+                const utterance = new SpeechSynthesisUtterance("Stop working. Do ten push ups now.");
                 utterance.rate = 1;
                 utterance.pitch = 0.8;
                 window.speechSynthesis.speak(utterance);

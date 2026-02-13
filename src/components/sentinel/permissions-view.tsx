@@ -9,7 +9,7 @@ export function PermissionsView({ onActivate }: PermissionsViewProps) {
   return (
     <Card className="w-full max-w-md border-primary shadow-lg shadow-primary/20">
       <CardHeader>
-        <CardTitle className="text-3xl font-bold text-primary">PushUp Sentinel</CardTitle>
+        <CardTitle className="text-3xl font-bold text-primary">Push Up Sentinel</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-6">
         <p className="text-lg text-muted-foreground">
