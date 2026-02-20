@@ -21,6 +21,7 @@ export function useSentinel() {
     const [lastPushupTime, setLastPushupTime] = useState<Timestamp | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
     const [currentPushupType, setCurrentPushupType] = useState(PUSHUP_TYPES[0]);
+    const [pushupCount, setPushupCount] = useState(20);
 
     const { toast } = useToast();
 
@@ -55,8 +56,12 @@ export function useSentinel() {
 
         const timerId = setInterval(() => {
             if (Date.now() - lastPushupTime.toDate().getTime() > PUSHUP_INTERVAL_MS) {
-                const randomIndex = Math.floor(Math.random() * PUSHUP_TYPES.length);
-                setCurrentPushupType(PUSHUP_TYPES[randomIndex]);
+                const randomTypeIndex = Math.floor(Math.random() * PUSHUP_TYPES.length);
+                setCurrentPushupType(PUSHUP_TYPES[randomTypeIndex]);
+                
+                const newPushupCount = Math.floor(Math.random() * 16) + 10; // Random number between 10 and 25
+                setPushupCount(newPushupCount);
+
                 setEnforcementActive(true);
             }
         }, 1000);
@@ -73,7 +78,7 @@ export function useSentinel() {
 
             const speak = () => {
                 if(window.speechSynthesis.speaking) return;
-                const utterance = new SpeechSynthesisUtterance(`Stop working. Do twenty ${currentPushupType}s now.`);
+                const utterance = new SpeechSynthesisUtterance(`Stop working. Do ${pushupCount} ${currentPushupType}s now.`);
                 utterance.rate = 1;
                 utterance.pitch = 0.8;
                 window.speechSynthesis.speak(utterance);
@@ -102,7 +107,7 @@ export function useSentinel() {
         }
 
         return () => stopEnforcement();
-    }, [enforcementActive, permissionsGranted, isClient, currentPushupType]);
+    }, [enforcementActive, permissionsGranted, isClient, currentPushupType, pushupCount]);
 
     const handlePermissionsClick = async () => {
         try {
@@ -135,6 +140,7 @@ export function useSentinel() {
         lastPushupTime,
         isUpdating,
         currentPushupType,
+        pushupCount,
         handlePermissionsClick,
         handleDidItClick,
     };

@@ -19,6 +19,7 @@ export default function Home() {
     handlePermissionsClick,
     handleDidItClick,
     currentPushupType,
+    pushupCount,
   } = useSentinel();
 
   const backgroundImage = PlaceHolderImages.find(img => img.id === 'gym-background');
@@ -36,7 +37,7 @@ export default function Home() {
       return <PermissionsView onActivate={handlePermissionsClick} />;
     }
     if (enforcementActive) {
-      return <EnforcementView onConfirm={handleDidItClick} isUpdating={isUpdating} pushupType={currentPushupType} />;
+      return <EnforcementView onConfirm={handleDidItClick} isUpdating={isUpdating} pushupType={currentPushupType} pushupCount={pushupCount} />;
     }
     return <IdleView lastPushupTime={lastPushupTime} />;
   }
