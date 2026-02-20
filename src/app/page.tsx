@@ -7,6 +7,7 @@ import { EnforcementView } from "@/components/sentinel/enforcement-view";
 import { IdleView } from "@/components/sentinel/idle-view";
 import { Loader2 } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { PromoTab } from "@/components/sentinel/promo-tab";
 
 export default function Home() {
   const {
@@ -42,6 +43,7 @@ export default function Home() {
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center p-4 text-center font-body">
+      <PromoTab />
       {backgroundImage && (
         <Image
           src={backgroundImage.imageUrl}
