@@ -9,7 +9,7 @@ export function IdleView({ lastPushupTime }: IdleViewProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       <h1 className="font-headline text-5xl font-black text-foreground">
-        Get grinding!
+        Ready for the next set!
       </h1>
       {lastPushupTime && (
         <p className="mt-8 text-lg text-accent">
