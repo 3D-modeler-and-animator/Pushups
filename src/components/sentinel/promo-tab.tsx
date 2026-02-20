@@ -11,7 +11,7 @@ export function PromoTab() {
         className="flex items-center gap-3 rounded-lg bg-primary/80 px-4 py-2 text-base font-semibold text-primary-foreground shadow-lg backdrop-blur-sm transition-colors hover:bg-primary"
       >
         <div className="h-8 w-8 bg-white/90 rounded-sm flex items-center justify-center text-xs font-bold text-black">
-          LOGO
+          
         </div>
         <span>From www.novaexams.com</span>
       </a>
