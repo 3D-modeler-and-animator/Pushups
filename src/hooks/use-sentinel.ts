@@ -53,7 +53,7 @@ export function useSentinel() {
     }, []);
 
     useEffect(() => {
-        if (!permissionsGranted || !isClient || !lastPushupTime) return;
+        if (!permissionsGranted || !isClient || !lastPushupTime || enforcementActive) return;
 
         const timerId = setInterval(() => {
             if (Date.now() - lastPushupTime.toDate().getTime() > PUSHUP_INTERVAL_MS) {
@@ -69,7 +69,7 @@ export function useSentinel() {
         }, 1000);
 
         return () => clearInterval(timerId);
-    }, [permissionsGranted, isClient, lastPushupTime, pushupTypeIndex]);
+    }, [permissionsGranted, isClient, lastPushupTime, pushupTypeIndex, enforcementActive]);
 
     useEffect(() => {
         if (!permissionsGranted || !isClient) return;
