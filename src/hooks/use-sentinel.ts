@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
-import { doc, onSnapshot, updateDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 
 const PUSHUP_TYPES = [
