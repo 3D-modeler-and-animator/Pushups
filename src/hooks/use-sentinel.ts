@@ -6,12 +6,22 @@ import { doc, onSnapshot, updateDoc, serverTimestamp, Timestamp } from 'firebase
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 
+const PUSHUP_TYPES = [
+    "Strict Push Up",
+    "Wide Hands Push Up",
+    "Diamond Push Up",
+    "Archer Push Up",
+    "Sphinx Push Up",
+    "Staggered Hands Push Up",
+];
+
 export function useSentinel() {
     const [isClient, setIsClient] = useState(false);
     const [permissionsGranted, setPermissionsGranted] = useState(false);
     const [enforcementActive, setEnforcementActive] = useState(false);
     const [lastPushupTime, setLastPushupTime] = useState<Timestamp | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [currentPushupType, setCurrentPushupType] = useState(PUSHUP_TYPES[0]);
 
     const { toast } = useToast();
 
@@ -46,6 +56,8 @@ export function useSentinel() {
 
         const timerId = setInterval(() => {
             if (Date.now() - lastPushupTime.toDate().getTime() > PUSHUP_INTERVAL_MS) {
+                const randomIndex = Math.floor(Math.random() * PUSHUP_TYPES.length);
+                setCurrentPushupType(PUSHUP_TYPES[randomIndex]);
                 setEnforcementActive(true);
             }
         }, 1000);
@@ -62,7 +74,7 @@ export function useSentinel() {
 
             const speak = () => {
                 if(window.speechSynthesis.speaking) return;
-                const utterance = new SpeechSynthesisUtterance("Stop working. Do twenty push ups now.");
+                const utterance = new SpeechSynthesisUtterance(`Stop working. Do twenty ${currentPushupType}s now.`);
                 utterance.rate = 1;
                 utterance.pitch = 0.8;
                 window.speechSynthesis.speak(utterance);
@@ -91,7 +103,7 @@ export function useSentinel() {
         }
 
         return () => stopEnforcement();
-    }, [enforcementActive, permissionsGranted, isClient]);
+    }, [enforcementActive, permissionsGranted, isClient, currentPushupType]);
 
     const handlePermissionsClick = async () => {
         try {
@@ -123,6 +135,7 @@ export function useSentinel() {
         enforcementActive,
         lastPushupTime,
         isUpdating,
+        currentPushupType,
         handlePermissionsClick,
         handleDidItClick,
     };

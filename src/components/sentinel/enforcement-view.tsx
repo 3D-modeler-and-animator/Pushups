@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 type EnforcementViewProps = {
   onConfirm: () => void;
   isUpdating: boolean;
+  pushupType: string;
 };
 
-export function EnforcementView({ onConfirm, isUpdating }: EnforcementViewProps) {
+export function EnforcementView({ onConfirm, isUpdating, pushupType }: EnforcementViewProps) {
   return (
     <div className="flex flex-col items-center gap-8">
       <h1 className="animate-pulse font-headline text-5xl font-black uppercase text-primary md:text-7xl">
         Stop working.
         <br />
-        Do twenty push ups now.
+        Do twenty {pushupType}s now.
       </h1>
       <Button
         onClick={onConfirm}
