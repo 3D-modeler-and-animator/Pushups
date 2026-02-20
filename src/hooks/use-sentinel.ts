@@ -22,6 +22,7 @@ export function useSentinel() {
     const [isUpdating, setIsUpdating] = useState(false);
     const [currentPushupType, setCurrentPushupType] = useState(PUSHUP_TYPES[0]);
     const [pushupCount, setPushupCount] = useState(20);
+    const [pushupTypeIndex, setPushupTypeIndex] = useState(0);
 
     const { toast } = useToast();
 
@@ -29,7 +30,7 @@ export function useSentinel() {
     const synthRef = useRef<Tone.Synth<Tone.SynthOptions> | null>(null);
     const speechIntervalRef = useRef<NodeJS.Timeout | null>(null);
     
-    const PUSHUP_INTERVAL_MS = 60 * 60 * 1000;
+    const PUSHUP_INTERVAL_MS = 5000; // 5 seconds for testing
 
     useEffect(() => {
         setIsClient(true);
@@ -56,8 +57,9 @@ export function useSentinel() {
 
         const timerId = setInterval(() => {
             if (Date.now() - lastPushupTime.toDate().getTime() > PUSHUP_INTERVAL_MS) {
-                const randomTypeIndex = Math.floor(Math.random() * PUSHUP_TYPES.length);
-                setCurrentPushupType(PUSHUP_TYPES[randomTypeIndex]);
+                setCurrentPushupType(PUSHUP_TYPES[pushupTypeIndex]);
+                const nextIndex = (pushupTypeIndex + 1) % PUSHUP_TYPES.length;
+                setPushupTypeIndex(nextIndex);
                 
                 const newPushupCount = Math.floor(Math.random() * 16) + 10; // Random number between 10 and 25
                 setPushupCount(newPushupCount);
@@ -67,7 +69,7 @@ export function useSentinel() {
         }, 1000);
 
         return () => clearInterval(timerId);
-    }, [permissionsGranted, isClient, lastPushupTime]);
+    }, [permissionsGranted, isClient, lastPushupTime, pushupTypeIndex]);
 
     useEffect(() => {
         if (!permissionsGranted || !isClient) return;
