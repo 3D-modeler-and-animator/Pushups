@@ -30,7 +30,7 @@ export function useSentinel() {
     const synthRef = useRef<Tone.Synth<Tone.SynthOptions> | null>(null);
     const speechIntervalRef = useRef<NodeJS.Timeout | null>(null);
     
-    const PUSHUP_INTERVAL_MS = 5000; // 5 seconds for testing
+    const PUSHUP_INTERVAL_MS = 3600000; // 1 hour
 
     useEffect(() => {
         setIsClient(true);
